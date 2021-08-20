@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/@egomobile/redis.svg)](https://www.npmjs.com/package/@egomobile/redis) [![last build](https://img.shields.io/github/workflow/status/egomobile/redis/Publish)](https://github.com/egomobile/redis/actions?query=workflow%3APublish) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/egomobile/redis/pulls)
+[![npm](https://img.shields.io/npm/v/@egomobile/redis.svg)](https://www.npmjs.com/package/@egomobile/redis) [![last build](https://img.shields.io/github/workflow/status/egomobile/redis/Publish)](https://github.com/egomobile/node-redis/actions?query=workflow%3APublish) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/egomobile/node-redis/pulls)
 
 # @egomobile/redis
 
