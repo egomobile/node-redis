@@ -35,4 +35,4 @@ await cache.get("foo", "TM"); // "TM"
 
 ## Documentation
 
-The API documentation can be found [here](https://egomobile.github.io/redis/).
+The API documentation can be found [here](https://egomobile.github.io/node-redis/).
