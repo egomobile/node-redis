@@ -93,10 +93,10 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="index.RedisCache.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-private-protected">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="index.RedisCache.html#client" class="tsd-kind-icon">client</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="index.RedisCache.html#client" class="tsd-kind-icon">client</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="index.RedisCache.html#delAsync" class="tsd-kind-icon">del<wbr>Async</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="index.RedisCache.html#flushdbAsync" class="tsd-kind-icon">flushdb<wbr>Async</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="index.RedisCache.html#getAsync" class="tsd-kind-icon">get<wbr>Async</a></li>
@@ -106,6 +106,7 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="index.RedisCache.html#close" class="tsd-kind-icon">close</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="index.RedisCache.html#flush" class="tsd-kind-icon">flush</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="index.RedisCache.html#get" class="tsd-kind-icon">get</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="index.RedisCache.html#set" class="tsd-kind-icon">set</a></li>
@@ -126,7 +127,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L82">index.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L77">index.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -161,15 +162,15 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="client" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> client</h3>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> client</h3>
 					<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RedisClient</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L60">index.ts:60</a></li>
+							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L118">index.ts:118</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -184,7 +185,7 @@
 					<div class="tsd-signature tsd-kind-icon">del<wbr>Async<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L230">index.ts:230</a></li>
+							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L249">index.ts:249</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -194,7 +195,7 @@
 					<div class="tsd-signature tsd-kind-icon">flushdb<wbr>Async<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L231">index.ts:231</a></li>
+							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L250">index.ts:250</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -204,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">get<wbr>Async<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L232">index.ts:232</a></li>
+							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L251">index.ts:251</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -214,13 +215,55 @@
 					<div class="tsd-signature tsd-kind-icon">set<wbr>Async<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L233">index.ts:233</a></li>
+							<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L252">index.ts:252</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="close" class="tsd-anchor"></a>
+					<h3>close</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">close<span class="tsd-signature-symbol">(</span>flush<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L135">index.ts:135</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Closes the connection.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">RedisCache</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;@egomobile/redis&quot;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">cache</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">RedisCache</span><span style="color: #000000">()</span>
+
+<span style="color: #001080">cache</span><span style="color: #000000">.</span><span style="color: #795E26">close</span><span style="color: #000000">()  </span><span style="color: #008000">// no flush</span>
+<span style="color: #008000">// cache.close(true)  // with flush</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>flush: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Flush connection after closed or not.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="flush" class="tsd-anchor"></a>
 					<h3>flush</h3>
@@ -231,7 +274,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L139">index.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L158">index.ts:158</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -270,7 +313,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L168">index.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L187">index.ts:187</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -313,7 +356,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L169">index.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L188">index.ts:188</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -348,7 +391,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/c113794/src/index.ts#L210">index.ts:210</a></li>
+									<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/1481147/src/index.ts#L229">index.ts:229</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -425,7 +468,7 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="index.RedisCache.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="index.RedisCache.html#client" class="tsd-kind-icon">client</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -439,6 +482,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="index.RedisCache.html#setAsync" class="tsd-kind-icon">set<wbr>Async</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="index.RedisCache.html#close" class="tsd-kind-icon">close</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="index.RedisCache.html#flush" class="tsd-kind-icon">flush</a>
@@ -468,13 +514,11 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
