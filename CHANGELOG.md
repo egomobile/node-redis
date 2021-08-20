@@ -1,5 +1,5 @@
 # Change Log (@egomobile/redis)
 
-## 0.1.2
+## 0.1.3
 
 - initial release
