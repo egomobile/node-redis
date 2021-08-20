@@ -43,11 +43,11 @@ export interface IRedisCacheOptions {
     /**
      * The custom host.
      */
-    host?: string | null;
+    host?: string;
     /**
      * The custom TCP port.
      */
-    port?: number | null;
+    port?: number;
 }
 
 /**
@@ -80,7 +80,8 @@ export class RedisCache {
         let host: string | undefined;
         let port: number | undefined;
         if (options) {
-
+            host = options.host;
+            port = options.port;
         } else {
             const REDIS_HOST = process.env.REDIS_HOST?.trim();
             const REDIS_PORT = process.env.REDIS_PORT?.trim();
@@ -145,7 +146,6 @@ export class RedisCache {
      *
      * const cache = new RedisCache()
      *
-     * // if "foo2" does not exist, "bar" is returned
      * if (await cache.flush()) {
      *     // success
      * } else {
@@ -246,7 +246,7 @@ export class RedisCache {
         }
     }
 
-    private readonly delAsync: any = null;
+    private readonly delAsync: any;
     private readonly flushdbAsync: any;
     private readonly getAsync: any;
     private readonly setAsync: any;
