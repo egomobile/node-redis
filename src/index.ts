@@ -55,11 +55,6 @@ export interface IRedisCacheOptions {
  */
 export class RedisCache {
     /**
-     * The underlying base client.
-     */
-    protected client: RedisClient;
-
-    /**
      * Initializes a new instance of that class.
      *
      * @example
@@ -115,6 +110,30 @@ export class RedisCache {
         this.flushdbAsync = promisify(this.client.flushdb).bind(this.client);
         this.getAsync = promisify(this.client.get).bind(this.client);
         this.setAsync = promisify(this.client.set).bind(this.client);
+    }
+
+    /**
+     * The underlying base client.
+     */
+    public readonly client: RedisClient;
+
+    /**
+     * Closes the connection.
+     *
+     * @example
+     * ```
+     * import RedisCache from "@egomobile/redis"
+     *
+     * const cache = new RedisCache()
+     *
+     * cache.close()  // no flush
+     * // cache.close(true)  // with flush
+     * ```
+     *
+     * @param {boolean} flush Flush connection after closed or not.
+     */
+    public close(flush = false): void {
+        this.client.end(flush);
     }
 
     /**
