@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import type { RedisClient } from 'redis';
-import { promisify } from 'util';
+import type { RedisClientType } from "redis";
 
 /**
  * Options for RedisCache class.
@@ -72,23 +71,24 @@ export class RedisCache {
      * })
      * ```
      *
-     * @param {IRedisCacheOptions|null|undefined} [options] Custom options.
+     * @param {IRedisCacheOptions|null|undefined} [options=undefined] Custom options.
      */
     public constructor(options?: IRedisCacheOptions | null) {
-        const redis = require('redis');
+        const redis = require("redis");
 
         let host: string | undefined;
         let port: number | undefined;
         if (options) {
             host = options.host;
             port = options.port;
-        } else {
+        }
+        else {
             const REDIS_HOST = process.env.REDIS_HOST?.trim();
             const REDIS_PORT = process.env.REDIS_PORT?.trim();
 
             host = REDIS_HOST;
             if (!host?.length) {
-                host = 'localhost';
+                host = "localhost";
             }
 
             if (REDIS_PORT?.length) {
@@ -101,22 +101,17 @@ export class RedisCache {
             port
         });
 
-        this.client.on('error', (error: any) => {
+        this.client.on("error", (error: any) => {
             console.warn(`REDIS ERROR: ${error}`, {
-                file: __filename
+                "file": __filename
             });
         });
-
-        this.delAsync = promisify(this.client.del).bind(this.client);
-        this.flushdbAsync = promisify(this.client.flushdb).bind(this.client);
-        this.getAsync = promisify(this.client.get).bind(this.client);
-        this.setAsync = promisify(this.client.set).bind(this.client);
     }
 
     /**
      * The underlying base client.
      */
-    public readonly client: RedisClient;
+    public readonly client: RedisClientType;
 
     /**
      * Closes the connection.
@@ -127,14 +122,20 @@ export class RedisCache {
      *
      * const cache = new RedisCache()
      *
-     * cache.close()  // no flush
-     * // cache.close(true)  // with flush
+     * await cache.close()  // wait until remaining commands are handled
+     * // await cache.close(true)  // disconnect immediately
      * ```
      *
-     * @param {boolean} flush Flush connection after closed or not.
+     * @param {boolean} [force=false] Disconnect without sending remaining command (true)
+     *                                or wait, if all were handled, before disconnect (false).
      */
-    public close(flush = false): void {
-        this.client.end(flush);
+    public async close(force = false): Promise<void> {
+        if (force) {
+            await this.client.disconnect();
+        }
+        else {
+            await this.client.quit();
+        }
     }
 
     /**
@@ -157,8 +158,11 @@ export class RedisCache {
      */
     public async flush(): Promise<boolean> {
         try {
-            return await this.flushdbAsync('ASYNC');
-        } catch {
+            await this.client.flushDb();
+
+            return true;
+        }
+        catch {
             return false;
         }
     }
@@ -180,7 +184,7 @@ export class RedisCache {
      * ```
      *
      * @param {string} key The key.
-     * @param {TDefault} [defaultValue] The custom default value.
+     * @param {TDefault} [defaultValue=undefined] The custom default value.
      *
      * @returns {Promise<TResult|TDefault|undefined>} The promise with the value or the default value.
      */
@@ -188,12 +192,13 @@ export class RedisCache {
     public get<TResult, TDefault>(key: string, defaultValue: TDefault): Promise<TResult | TDefault>;
     public async get<TResult extends any = any, TDefault extends any = any>(key: string, defaultValue?: TDefault): Promise<TResult | TDefault | undefined> {
         try {
-            const value = await this.getAsync(key);
+            const value = await this.client.get(key);
 
-            if (typeof value === 'string') {
+            if (typeof value === "string") {
                 return JSON.parse(value);
             }
-        } catch { }
+        }
+        catch { }
 
         return defaultValue;
     }
@@ -222,34 +227,34 @@ export class RedisCache {
      *
      * @param {string} key The key.
      * @param {any} value The (new) value. A value of (null) or (undefined) will delete the value of a key.
-     * @param {number|false} [ttl] The time in seconds, the value "lives". (false) indicates that the value does not become invalid and "lives forever".
+     * @param {number|false} [ttl=3600] The time in seconds, the value "lives". (false) indicates that the value does not become invalid and "lives forever".
      *
      * @returns {Promise<boolean>} The promise, that indicates if operation was successful or not.
      */
     public async set(key: string, value: any, ttl: number | false = 3600): Promise<boolean> {
         try {
-            if (value === null || typeof value === 'undefined') {
-                await this.delAsync(key);
-            } else {
+            if (value === null || typeof value === "undefined") {
+                await this.client.del(key);
+            }
+            else {
                 const jsonStr = JSON.stringify(value);
 
                 if (ttl === false) {
-                    await this.setAsync(key, jsonStr);
-                } else {
-                    await this.setAsync(key, jsonStr, 'EX', ttl);
+                    await this.client.set(key, jsonStr);
+                }
+                else {
+                    await this.client.set(key, jsonStr, {
+                        "EX": ttl
+                    });
                 }
             }
 
             return true;
-        } catch {
+        }
+        catch {
             return false;
         }
     }
-
-    private readonly delAsync: any;
-    private readonly flushdbAsync: any;
-    private readonly getAsync: any;
-    private readonly setAsync: any;
 }
 
 /**
