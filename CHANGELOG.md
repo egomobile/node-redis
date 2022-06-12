@@ -1,6 +1,6 @@
 # Change Log (@egomobile/redis)
 
-## 0.4.0
+## 1.0.0
 
 - **BREAKING CHANGE**: first parameter of [close()](https://egomobile.github.io/node-redis/classes/index.RedisCache.html#close) method has now another meaning and indicates if the connect should be closed immediately or gracefully
 - module requires at least [Node 14+](https://nodejs.org/gl/blog/release/v14.0.0/)
