@@ -15,7 +15,7 @@
 <li><a href="../modules.html">@egomobile/redis</a></li>
 <li><a href="RedisCacheFetcher.html">RedisCacheFetcher</a></li></ul>
 <h1>Type alias RedisCacheFetcher&lt;TFunc&gt;</h1></div>
-<div class="tsd-signature"><span class="tsd-kind-type-alias">Redis<wbr/>Cache<wbr/>Fetcher</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type tsd-kind-type-parameter">TFunc</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span><span class="tsd-kind-parameter">args</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type tsd-kind-type-parameter">TFunc</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-call-signature">reset</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
+<div class="tsd-signature"><span class="tsd-kind-type-alias">Redis<wbr/>Cache<wbr/>Fetcher</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type tsd-kind-type-parameter">TFunc</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span><span class="tsd-kind-parameter">args</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type tsd-kind-type-parameter">TFunc</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">fetch</span><span class="tsd-signature-symbol">: </span><a href="RedisCacheFetcherEx.html" class="tsd-signature-type tsd-kind-type-alias">RedisCacheFetcherEx</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type tsd-kind-type-parameter">TFunc</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">reset</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
 <div class="tsd-comment tsd-typography"><p>A Redis cache data fetcher.</p>
 </div>
 <section class="tsd-panel">
@@ -40,6 +40,11 @@
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
 <li class="tsd-parameter">
+<h5><span class="tsd-kind-property">fetch</span><span class="tsd-signature-symbol">: </span><a href="RedisCacheFetcherEx.html" class="tsd-signature-type tsd-kind-type-alias">RedisCacheFetcherEx</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type tsd-kind-type-parameter">TFunc</span><span class="tsd-signature-symbol">&gt;</span></h5>
+<div class="tsd-comment tsd-typography"><p>Does the same as the function itself, but returns a result object with extended information.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
 <h5><span class="tsd-kind-method">reset</span><span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link"><span class="tsd-kind-call-signature">reset</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
@@ -50,14 +55,14 @@
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/291e681/src/utils/index.ts#L59">utils/index.ts:59</a></li></ul></aside></li></ul></li></ul></div>
+<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/d330ad0/src/utils/index.ts#L83">utils/index.ts:83</a></li></ul></aside></li></ul></li></ul></div>
 <div class="tsd-comment tsd-typography">
 <h4>Param</h4><p>The parameters of the function.</p>
 
 <h4>Returns</h4><p>The result of the function.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/291e681/src/utils/index.ts#L53">utils/index.ts:53</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/egomobile/node-redis/blob/d330ad0/src/utils/index.ts#L73">utils/index.ts:73</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -77,10 +82,13 @@
 <nav class="tsd-navigation"><a href="../modules.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>@egomobile/redis</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">
 <li><a href="../modules.html#default"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg>default</a></li>
+<li><a href="../enums/RedisCacheFetcherValueStatus.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg>RedisCacheFetcherValueStatus</a></li>
 <li><a href="../classes/RedisCache.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>RedisCache</a></li>
 <li><a href="../interfaces/ICreateRedisCacheFetcherOptions.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg>ICreateRedisCacheFetcherOptions</a></li>
+<li><a href="../interfaces/IExecuteRedisCacheFetcherResult.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg>IExecuteRedisCacheFetcherResult</a></li>
 <li><a href="../interfaces/IRedisCacheOptions.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg>IRedisCacheOptions</a></li>
 <li><a href="RedisCacheFetcher.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>RedisCacheFetcher</a></li>
+<li><a href="RedisCacheFetcherEx.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>RedisCacheFetcherEx</a></li>
 <li><a href="../functions/createRedisCacheFetcher.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg>createRedisCacheFetcher</a></li></ul></nav></div></div></div>
 <div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" rel="noopener" target="_blank">TypeDoc</a></p></div>
