@@ -3,9 +3,9 @@
     "compilerOptions": {
         "outDir": "lib",
         "rootDir": "src",
-        "target": "es2019",
+        "target": "es2022",
         "lib": [
-            "es2019"
+            "es2022"
         ],
         "moduleResolution": "node",
         "declaration": true,
@@ -15,6 +15,7 @@
         "sourceMap": false
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "sandbox"
     ]
 }
