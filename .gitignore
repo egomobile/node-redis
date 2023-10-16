@@ -3,3 +3,7 @@ node_modules/
 /sandbox.ts
 /docs
 /lib
+
+.env.local
+/docker-compose.yml
+sandbox*
