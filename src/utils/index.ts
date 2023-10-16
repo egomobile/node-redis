@@ -44,6 +44,26 @@ export interface ICreateRedisCacheFetcherOptions {
 }
 
 /**
+ * Result of a `RedisCacheFetcherEx<TFunc>` call.
+ */
+export interface IExecuteRedisCacheFetcherResult<TFunc extends AsyncFunc = AsyncFunc> {
+    /**
+     * If defined, this is the `Error` object, which should be thrown, because
+     * at least no data can be loaded yet.
+     */
+    readonly errorToThrow: any;
+    /**
+     * The last known value. Will throw an `Error`, if there is currently no value available.
+     * s. `errorToThrow` for more information.
+     */
+    readonly value: ReturnType<TFunc>;
+    /**
+     * The current status of `value`.
+     */
+    readonly valueStatus: RedisCacheFetcherValueStatus;
+}
+
+/**
  * A Redis cache data fetcher.
  *
  * @param {Parameters<TFunc>} [...args] The parameters of the function.
@@ -52,12 +72,44 @@ export interface ICreateRedisCacheFetcherOptions {
  */
 export type RedisCacheFetcher<TFunc extends AsyncFunc = AsyncFunc> = ((...args: Parameters<TFunc>) => ReturnType<TFunc>) & {
     /**
+     * Does the same as the function itself, but returns a result object with extended information.
+     */
+    fetch: RedisCacheFetcherEx<TFunc>;
+    /**
      * Resets the current status.
      *
      * @returns {Promise<boolean>} The promise with the value that indicates if operation was successful or not.
      */
     reset(): Promise<boolean>;
 };
+
+/**
+ * Same as `RedisCacheFetcherEx<TFunc>`, but returns an object with an extended result.
+ *
+ * @params {Parameters<TFunc>} [...args] The arguments for the function.
+ *
+ * @returns {Promise<IExecuteRedisCacheFetcherResult<TFunc>>} The promise with the exected result of the function.
+ */
+export type RedisCacheFetcherEx<TFunc extends AsyncFunc = AsyncFunc> =
+    (...args: Parameters<TFunc>) => Promise<IExecuteRedisCacheFetcherResult<TFunc>>;
+
+/**
+ * List of statuses of fetcher values.
+ */
+export enum RedisCacheFetcherValueStatus {
+    /**
+     * Currently no data could be fetched successfully yet.
+     */
+    NoValueAvailable = 0,
+    /**
+     * The returned value is cached.
+     */
+    Cached = 1,
+    /**
+     * The value has recently been (re-)fetched and is up-to-date.
+     */
+    UpToDate = 2,
+}
 
 /**
  * Wraps a function, that fetches and caches a value, using a `RedisCache` instance.
@@ -126,7 +178,10 @@ export function createRedisCacheFetcher<TFunc extends AsyncFunc>(
     }
 
     // RedisCacheFetcher<TFunc>
-    const func = (async (...args: any[]): Promise<any> => {
+    const fetch = (async (...args: any[]): Promise<any> => {
+        let errorToThrow: any;
+        let valueStatus = RedisCacheFetcherValueStatus.Cached;
+
         try {
             const now = new Date();
 
@@ -143,6 +198,7 @@ export function createRedisCacheFetcher<TFunc extends AsyncFunc>(
                 };
 
                 lastValue = valueToCache.value;
+                valueStatus = RedisCacheFetcherValueStatus.UpToDate;
 
                 await redis.set(key, valueToCache, ttl);
 
@@ -175,15 +231,74 @@ export function createRedisCacheFetcher<TFunc extends AsyncFunc>(
             if (lastValue === NOT_INITIALIZED_YET) {
                 // we must have at least one successful
                 // call of data fetcher here
-                throw error;
+                errorToThrow = error;
             }
         }
 
-        return lastValue;
+        let value = lastValue;
+
+        const result: IExecuteRedisCacheFetcherResult<TFunc> = {
+            errorToThrow,
+            "value": undefined!,
+            "valueStatus": undefined!
+        };
+
+        // result.errorToThrow
+        Object.defineProperty(result, "errorToThrow", {
+            "enumerable": true,
+            "configurable": false,
+            "get": () => {
+                return errorToThrow;
+            }
+        });
+
+        // result.value
+        Object.defineProperty(result, "value", {
+            "enumerable": true,
+            "configurable": false,
+            "get": () => {
+                if (value === NOT_INITIALIZED_YET) {
+                    throw new Error("No data available yet!", {
+                        "cause": errorToThrow ?? undefined
+                    });
+                }
+
+                return value;
+            }
+        });
+
+        // result.valueStatus
+        Object.defineProperty(result, "valueStatus", {
+            "enumerable": true,
+            "configurable": false,
+            "get": () => {
+                return value === NOT_INITIALIZED_YET ?
+                    RedisCacheFetcherValueStatus.NoValueAvailable :
+                    valueStatus;
+            }
+        });
+
+        return result;
+    }) as unknown as RedisCacheFetcherEx<TFunc>;
+
+    const newFetcher = (async (...args: Parameters<TFunc>) => {
+        const {
+            errorToThrow,
+            value
+        } = await fetch(...args);
+
+        if (errorToThrow) {
+            throw new errorToThrow;
+        }
+
+        return value;
     }) as unknown as RedisCacheFetcher<TFunc>;
 
+    // RedisCacheFetcher<TFunc>.fetch()
+    newFetcher.fetch = fetch;
+
     // RedisCacheFetcher<TFunc>.reset()
-    func.reset = async () => {
+    newFetcher.reset = async () => {
         const hasBeenRemovedFromCache = await redis.set(key, null);
 
         lastValue = NOT_INITIALIZED_YET;
@@ -191,5 +306,5 @@ export function createRedisCacheFetcher<TFunc extends AsyncFunc>(
         return hasBeenRemovedFromCache;
     };
 
-    return func;
+    return newFetcher;
 }

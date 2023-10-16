@@ -1,5 +1,9 @@
 # Change Log (@egomobile/redis)
 
+## 2.1.0
+
+- add `fetch()` method to [RedisCacheFetcher](https://egomobile.github.io/node-redis/types/RedisCacheFetcher.html), which returns an extended result object
+
 ## 2.0.0
 
 - add `createFetcher()` to [RedisCache](https://egomobile.github.io/node-redis/classes/RedisCache.html)
