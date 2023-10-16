@@ -33,6 +33,50 @@ await cache.set("foo", null); // remove value
 await cache.get("foo", "TM"); // "TM"
 ```
 
+## Data fetchers
+
+Data fetchers are higher ordered function, which ensure, that data is cached and loaded at least once successfully.
+
+```typescript
+import axios from "axios";
+import RedisCache from "@egomobile/redis";
+
+const cache = new RedisCache();
+
+// loadRandomUsers: (seed: string) => Record<string, any>
+const loadRandomUsers = cache.createFetcher(
+  // the name of the key where to store in
+  // underlying `RedisCache` instance in `cache`
+  "randomUsersKey",
+
+  // the function to wrap
+  async (seed: string) => {
+    const response = await axios.get(
+      `https://randomuser.me/api/?seed=${encodeURIComponent(seed)}`
+    );
+
+    // Record<string, any>
+    return response.data;
+  }
+);
+
+// first call MUST be successful, otherwise
+// exception is re-thrown
+const data1 = await loadRandomUsers("foobar1");
+
+// should be same as `data1`, because it is cached
+//
+// this method does exactly the same as the function itself (and has its same structure), but
+// returns an object with extended information and without throwing an error
+const { value: data2 } = await loadRandomUsers.fetch("foobar2");
+
+// reset and force reloading data
+//
+// after reset, the execution MUST be successful at least one time again
+await loadRandomUsers.reset();
+const data3 = await loadRandomUsers("foobar3");
+```
+
 ## Documentation
 
 The API documentation can be found [here](https://egomobile.github.io/node-redis/).
