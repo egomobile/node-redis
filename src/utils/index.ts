@@ -301,7 +301,9 @@ export function createRedisCacheFetcher<TFunc extends AsyncFunc>(
     newFetcher.reset = async () => {
         const hasBeenRemovedFromCache = await redis.set(key, null);
 
-        lastValue = NOT_INITIALIZED_YET;
+        if (hasBeenRemovedFromCache) {
+            lastValue = NOT_INITIALIZED_YET;
+        }
 
         return hasBeenRemovedFromCache;
     };

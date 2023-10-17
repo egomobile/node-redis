@@ -1,6 +1,6 @@
 {
     "name": "@egomobile/redis",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "Redis classes and utilities for Node.js 18 or later.",
     "main": "lib/index.js",
     "engines": {
