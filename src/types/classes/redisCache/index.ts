@@ -14,7 +14,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import { promisify } from "node:util";
-import { RedisClientType, createClient } from "redis";
+import { RedisClientType } from "redis";
 import { createRedisCacheFetcher, ICreateRedisCacheFetcherOptions, RedisCacheFetcher } from "../../../utils";
 import type { AsyncFunc, Nilable } from "../../internal";
 import { isNil } from "../../../utils/internal";
@@ -80,7 +80,7 @@ export class RedisCache {
      * @param {IRedisCacheOptions|null|undefined} [options=undefined] Custom options.
      */
     public constructor(options?: IRedisCacheOptions | null) {
-        const { createClient2 } = require("redis");
+        const { createClient } = require("redis");
 
         const shouldDebug = !!options?.debug;
 
