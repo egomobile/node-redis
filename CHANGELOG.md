@@ -1,6 +1,10 @@
 # Change Log (@egomobile/redis)
 
-## 2.1.1
+## 3.0.0
+
+- `npm update`s
+
+## 2.1.2
 
 - add `fetch()` method to [RedisCacheFetcher](https://egomobile.github.io/node-redis/types/RedisCacheFetcher.html), which returns an extended result object
 - bugfixes

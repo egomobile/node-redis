@@ -14,7 +14,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import { promisify } from "node:util";
-import type { RedisClient } from "redis";
+import { RedisClientType, createClient } from "redis";
 import { createRedisCacheFetcher, ICreateRedisCacheFetcherOptions, RedisCacheFetcher } from "../../../utils";
 import type { AsyncFunc, Nilable } from "../../internal";
 import { isNil } from "../../../utils/internal";
@@ -23,6 +23,12 @@ import { isNil } from "../../../utils/internal";
  * Options for `RedisCache` class.
  */
 export interface IRedisCacheOptions {
+    /**
+     * Should output additional debug logs or not.
+     *
+     * @default `false`
+     */
+    debug?: Nilable<boolean>;
     /**
      * The custom host.
      */
@@ -41,15 +47,17 @@ export interface IRedisCacheOptions {
  * A Redis based cache implementation.
  */
 export class RedisCache {
+    // debugger
+    readonly #d: (...args: any[]) => void;
     readonly #delAsync: any;
-    readonly #flushdbAsync: any;
+    readonly #flushDbAsync: any;
     readonly #getAsync: any;
     readonly #setAsync: any;
 
     /**
      * The underlying base client.
      */
-    public readonly client: RedisClient;
+    public readonly client: RedisClientType;
 
     /**
      * Initializes a new instance of that class.
@@ -72,7 +80,18 @@ export class RedisCache {
      * @param {IRedisCacheOptions|null|undefined} [options=undefined] Custom options.
      */
     public constructor(options?: IRedisCacheOptions | null) {
-        const redis = require("redis");
+        const { createClient2 } = require("redis");
+
+        const shouldDebug = !!options?.debug;
+
+        if (shouldDebug) {
+            this.#d = (...args: any[]) => {
+                console.log("[REDIS DEBUG]", ...args);
+            };
+        }
+        else {
+            this.#d = () => { /** noop */ };
+        }
 
         let host: string | undefined;
         let port: number | undefined;
@@ -94,19 +113,25 @@ export class RedisCache {
             }
         }
 
-        this.client = redis.createClient({
-            host,
-            port
+        this.client = createClient({
+            "url": `redis://${host || "127.0.0.1"}:${port ?? 6379}`
         });
 
-        this.client.on("error", options?.onError ?? ((error: any) => {
-            console.warn(`REDIS ERROR: ${error}`, {
-                "file": __filename
-            });
-        }));
+        if (shouldDebug) {
+            this.client.on("error", options?.onError ?? ((error: any) => {
+                this.#d("[REDIS ERROR]:", error);
+            }));
+        }
+        else {
+            this.client.on("error", options?.onError ?? ((error: any) => {
+                console.warn(`REDIS ERROR: ${error}`, {
+                    "file": __filename
+                });
+            }));
+        }
 
         this.#delAsync = promisify(this.client.del).bind(this.client);
-        this.#flushdbAsync = promisify(this.client.flushdb).bind(this.client);
+        this.#flushDbAsync = promisify(this.client.flushDb).bind(this.client);
         this.#getAsync = promisify(this.client.get).bind(this.client);
         this.#setAsync = promisify(this.client.set).bind(this.client);
     }
@@ -120,15 +145,26 @@ export class RedisCache {
      *
      * const cache = new RedisCache()
      *
-     * cache.close()  // no flush
-     * // cache.close(true)  // with flush
+     * await cache.close()
      * ```
      *
-     * @param {boolean} [flush=false] Flush connection after closed or not.
+     * @returns {Promise<boolean>} The promise with a value that indicates if operation was successful or not.
      */
-    // eslint-disable-next-line require-await
-    public async close(flush = false): Promise<void> {
-        this.client.end(flush);
+    public async close(): Promise<boolean> {
+        const debugPrefix = "close()";
+
+        try {
+            await this.client.disconnect();
+
+            this.#d(debugPrefix, "Connection closed");
+
+            return true;
+        }
+        catch (error) {
+            this.#d(debugPrefix, "[ERROR]", error);
+
+            return false;
+        }
     }
 
     /**
@@ -198,10 +234,18 @@ export class RedisCache {
      * @returns {Promise<boolean>} The promise that indicates if operation was successful or not.
      */
     public async flush(): Promise<boolean> {
+        const debugPrefix = "flush()";
+
         try {
-            return await this.#flushdbAsync("ASYNC");
+            const response = await this.#flushDbAsync("ASYNC");
+
+            this.#d("[ERROR]", debugPrefix, "Flushed with response:", response);
+
+            return response;
         }
-        catch {
+        catch (error) {
+            this.#d("[ERROR]", debugPrefix, error);
+
             return false;
         }
     }
@@ -230,14 +274,22 @@ export class RedisCache {
     public get<TResult extends any = any>(key: string): Promise<TResult | undefined>;
     public get<TResult, TDefault>(key: string, defaultValue: TDefault): Promise<TResult | TDefault>;
     public async get<TResult extends any = any, TDefault extends any = any>(key: string, defaultValue?: TDefault): Promise<TResult | TDefault | undefined> {
+        const debugPrefix = `get(${key})`;
+
         try {
             const value = await this.#getAsync(key);
 
             if (typeof value === "string") {
-                return JSON.parse(value);
+                const result = JSON.parse(value);
+
+                this.#d(debugPrefix, "Return cached value");
+
+                return result;
             }
         }
-        catch { }
+        catch (error) { }
+
+        this.#d(debugPrefix, "Return default value");
 
         return defaultValue;
     }
@@ -271,9 +323,13 @@ export class RedisCache {
      * @returns {Promise<boolean>} The promise, that indicates if operation was successful or not.
      */
     public async set(key: string, value: any, ttl: number | false = 3600): Promise<boolean> {
+        const debugPrefix = `set(${key}, value, ttl=${ttl})`;
+
         try {
             if (isNil(value)) {
                 await this.#delAsync(key);
+
+                this.#d(debugPrefix, "Value removed");
             }
             else {
                 const jsonStr = JSON.stringify(value);
@@ -284,11 +340,15 @@ export class RedisCache {
                 else {
                     await this.#setAsync(key, jsonStr, "EX", ttl);
                 }
+
+                this.#d(debugPrefix, "Value updated");
             }
 
             return true;
         }
-        catch {
+        catch (error) {
+            this.#d("[ERROR]", debugPrefix, error);
+
             return false;
         }
     }
